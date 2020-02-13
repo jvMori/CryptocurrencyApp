@@ -47,9 +47,17 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
+    //Room
+    def room_ver  = "2.2.3"
+    implementation "androidx.room:room-runtime:$room_ver"
+    implementation "androidx.room:room-rxjava2:$room_ver"
+    implementation "androidx.room:room-ktx:$room_ver"
+    kapt "androidx.room:room-compiler:$room_ver"
+
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.6.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.3.1'
+
     //Gson
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
 

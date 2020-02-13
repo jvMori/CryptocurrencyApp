@@ -6,5 +6,5 @@ data class CryptocurrencyEntity(
     var priceUSD: Float,
     var percentChangeHour: Float,
     var percentChange24Hours: Float,
-    var supply: Float
+    var volume: Float
 )
