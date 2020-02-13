@@ -1,9 +1,13 @@
 package com.jvmori.cryptocurrencyapp.cryptolist.data.local
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity(tableName = "crypto_table")
 data class CryptocurrencyData(
     @ColumnInfo(name = "crypto_id")
+    @PrimaryKey(autoGenerate = false)
     var id: String = "",
     @ColumnInfo(name = "crypto_name")
     var name: String = "",
