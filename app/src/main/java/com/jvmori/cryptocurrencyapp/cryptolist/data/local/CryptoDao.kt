@@ -1,15 +1,13 @@
 package com.jvmori.cryptocurrencyapp.cryptolist.data.local
 
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import androidx.room.Transaction
+import androidx.room.*
 import io.reactivex.Observable
 
-abstract class CryptoDao {
+@Dao
+interface CryptoDao {
 
     @Query("Select * from crypto_table")
-    abstract fun getCryptocurrencies() : Observable<List<CryptocurrencyData>>
+    fun getCryptocurrencies() : Observable<List<CryptocurrencyData>>
 
     @Transaction
     fun update(data: List<CryptocurrencyData>) {
@@ -20,8 +18,8 @@ abstract class CryptoDao {
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(cryptocurrencies : List<CryptocurrencyData>)
+    fun insert(cryptocurrencies : List<CryptocurrencyData>)
 
     @Query("Delete from crypto_table")
-    abstract fun delete()
+    fun delete()
 }
