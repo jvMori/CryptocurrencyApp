@@ -6,7 +6,7 @@ import io.reactivex.Observable
 @Dao
 interface CryptoDao {
 
-    @Query("Select * from crypto_table")
+    @Query("Select * from crypto_table order by crypto_name DESC")
     fun getCryptocurrencies() : Observable<List<CryptocurrencyData>>
 
     @Transaction
