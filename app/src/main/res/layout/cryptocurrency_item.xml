@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:tools="http://schemas.android.com/tools" xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <import type="com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity"/>
         <variable name="cryptoItem" type="CryptocurrencyEntity"/>
@@ -9,5 +10,54 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        <TextView
+                android:id="@+id/name"
+                android:text='@{cryptoItem.cryptoName, default="Bitcoin"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+                app:layout_constraintTop_toTopOf="parent" android:layout_marginTop="8dp"/>
+        <TextView
+                android:text='@{cryptoItem.symbol, default="BTC"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/symbol"
+                android:layout_marginTop="2dp"
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                app:layout_constraintStart_toStartOf="@+id/name"
+                android:textSize="12sp"/>
+        <TextView
+                android:text='@{"$"+ Double.toString(cryptoItem.priceUSD), default="$9,933.05"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/price"
+                app:layout_constraintStart_toEndOf="@+id/symbol"
+                android:layout_marginStart="24dp"
+                app:layout_constraintTop_toTopOf="@+id/symbol"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintBottom_toBottomOf="@+id/symbol"/>
+        <TextView
+                android:text='@{Double.toString(cryptoItem.percentChangeHour) + "%", default="-2.38%"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/percentChange1h"
+                app:layout_constraintStart_toEndOf="@+id/price"
+                android:layout_marginStart="32dp"
+                app:layout_constraintTop_toTopOf="@+id/price"/>
+        <TextView
+                android:text='@{Double.toString(cryptoItem.percentChange24Hours) + "%", default="-3.24%"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/percentChange24h"
+                app:layout_constraintStart_toEndOf="@+id/percentChange1h"
+                android:layout_marginStart="16dp"
+                app:layout_constraintTop_toTopOf="@+id/percentChange1h"/>
+        <TextView
+                android:text='@{"$" + Double.toString(cryptoItem.volume), default="$33,581,275,462"}'
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" android:id="@+id/textView7"
+                android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/percentChange24h"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
