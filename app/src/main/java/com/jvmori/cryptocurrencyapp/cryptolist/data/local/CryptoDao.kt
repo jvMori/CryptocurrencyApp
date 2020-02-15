@@ -1,7 +1,6 @@
 package com.jvmori.cryptocurrencyapp.cryptolist.data.local
 
 import androidx.room.*
-import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
 import io.reactivex.Observable
 
