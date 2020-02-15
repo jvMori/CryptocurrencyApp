@@ -90,4 +90,8 @@ dependencies {
     def nav_version = "2.2.1"
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    //Work Manager
+    def work_ver = "2.3.1"
+    implementation "androidx.work:work-runtime-ktx:$work_ver"
 }

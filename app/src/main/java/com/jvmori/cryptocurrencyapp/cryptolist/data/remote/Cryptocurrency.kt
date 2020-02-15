@@ -9,11 +9,11 @@ data class Cryptocurrency(
     @SerializedName("name")
     var name: String = "",
     @SerializedName("percent_change_1h")
-    var percentChange1h: String = "",
+    var percentChange1h: Double = 0.00,
     @SerializedName("percent_change_24h")
-    var percentChange24h: String = "",
+    var percentChange24h: Double = 0.00,
     @SerializedName("price_usd")
-    var priceUsd: String = "",
+    var priceUsd: Double = 0.00,
     @SerializedName("symbol")
     var symbol: String = "",
     @SerializedName("volume24")

@@ -4,4 +4,5 @@ import io.reactivex.Observable
 
 interface LocalDataSource {
     fun getCryptocurrencies(sort : String) : Observable<List<CryptocurrencyData>>
+    fun updateCryptocurrencies(cryptocurrencies : List<CryptocurrencyData>)
 }
