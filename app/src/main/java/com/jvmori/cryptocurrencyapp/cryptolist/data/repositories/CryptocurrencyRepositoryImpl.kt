@@ -16,6 +16,10 @@ class CryptocurrencyRepositoryImpl(
         }
     }
 
+    override fun refreshPeriodically() {
+
+    }
+
     private fun mapper(cryptocurrencyData: List<CryptocurrencyData>): List<CryptocurrencyEntity> {
         return cryptocurrencyData.map {
             CryptocurrencyEntity(

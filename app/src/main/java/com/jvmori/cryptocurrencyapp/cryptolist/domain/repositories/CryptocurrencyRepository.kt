@@ -6,4 +6,5 @@ import io.reactivex.Observable
 
 interface CryptocurrencyRepository {
     fun getCryptocurrencies(sort : String = cryptoName) : Observable<List<CryptocurrencyEntity>>
+    fun refreshPeriodically()
 }

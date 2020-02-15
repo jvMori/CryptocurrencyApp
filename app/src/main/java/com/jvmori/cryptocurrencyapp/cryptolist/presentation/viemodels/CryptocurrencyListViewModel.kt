@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jvmori.cryptocurrencyapp.cryptolist.data.util.Resource
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity
-import com.jvmori.cryptocurrencyapp.cryptolist.domain.usecases.GetCryptocurrencyListUseCase
+import com.jvmori.cryptocurrencyapp.cryptolist.domain.usecases.GetCryptocurrenciesUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class CryptocurrencyListViewModel(
-    private val cryptocurrencyListUseCase : GetCryptocurrencyListUseCase
+    private val cryptocurrencyListUseCase : GetCryptocurrenciesUseCase
 ) : ViewModel() {
 
     private val disposable = CompositeDisposable()
