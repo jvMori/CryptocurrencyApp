@@ -1,13 +1,19 @@
 package com.jvmori.cryptocurrencyapp.cryptolist.data.local
 
 import androidx.room.*
+import androidx.sqlite.db.SimpleSQLiteQuery
+import androidx.sqlite.db.SupportSQLiteQuery
 import io.reactivex.Observable
 
 @Dao
 interface CryptoDao {
 
-    @Query("Select * from crypto_table order by crypto_name DESC")
-    fun getCryptocurrencies() : Observable<List<CryptocurrencyData>>
+    @RawQuery(observedEntities = [CryptocurrencyData::class])
+    fun getCryptocurrencies(query : SupportSQLiteQuery) : Observable<List<CryptocurrencyData>>
+
+//    fun getQuery(sort : String) : SimpleSQLiteQuery {
+//        return  SimpleSQLiteQuery("Select * from crypto_table order by ? DESC", arrayOf(sort))
+//    }
 
     @Transaction
     fun update(data: List<CryptocurrencyData>) {
