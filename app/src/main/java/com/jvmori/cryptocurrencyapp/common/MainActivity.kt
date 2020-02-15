@@ -1,7 +1,8 @@
-package com.jvmori.cryptocurrencyapp
+package com.jvmori.cryptocurrencyapp.common
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.jvmori.cryptocurrencyapp.R
 
 class MainActivity : AppCompatActivity() {
 
