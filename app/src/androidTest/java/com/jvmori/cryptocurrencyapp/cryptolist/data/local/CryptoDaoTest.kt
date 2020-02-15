@@ -43,12 +43,8 @@ class CryptoDaoTest {
         val cryptocurrencies = TestUtil.cryptocurrenciesDefaultOrder
         cryptoDao.insert(cryptocurrencies)
 
-        fun getQuery(sort: String): SimpleSQLiteQuery {
-            return SimpleSQLiteQuery("Select * from crypto_table order by ? ASC", arrayOf(sort))
-        }
-
         val getCryptocurrencyList =
-            cryptoDao.getCryptocurrencies(getQuery(cryptoName))
+            cryptoDao.getCryptocurrencies(getCryptocurrenciesBy(cryptoName))
 
         assertNotNull(getCryptocurrencyList)
     }
@@ -59,12 +55,8 @@ class CryptoDaoTest {
         val cryptocurrencies = TestUtil.cryptocurrenciesDefaultOrder
         cryptoDao.insert(cryptocurrencies)
 
-        fun getQuery(sort: String): SimpleSQLiteQuery {
-            return SimpleSQLiteQuery("Select * from crypto_table order by ? ASC", arrayOf(sort))
-        }
-
         val getCryptocurrencyList =
-            cryptoDao.getCryptocurrencies(getQuery(cryptoName))
+            cryptoDao.getCryptocurrencies(getCryptocurrenciesBy(cryptoName))
 
         assertEquals(cryptocurrencies[0].name, getCryptocurrencyList.blockingFirst()[0].name)
         assertEquals(cryptocurrencies[1].name, getCryptocurrencyList.blockingFirst()[1].name)
@@ -76,12 +68,8 @@ class CryptoDaoTest {
         val cryptocurrencies = TestUtil.cryptocurrenciesVolumeOrder
         cryptoDao.insert(cryptocurrencies)
 
-        fun getQuery(sort: String): SimpleSQLiteQuery {
-            return SimpleSQLiteQuery("Select * from crypto_table order by ? ASC", arrayOf(sort))
-        }
-
         val getCryptocurrencyList =
-            cryptoDao.getCryptocurrencies(getQuery(cryptoVolume))
+            cryptoDao.getCryptocurrencies(getCryptocurrenciesBy(cryptoVolume))
 
         assertEquals(cryptocurrencies[0].name, getCryptocurrencyList.blockingFirst()[0].name)
         assertEquals(cryptocurrencies[1].name, getCryptocurrencyList.blockingFirst()[1].name)
@@ -93,12 +81,8 @@ class CryptoDaoTest {
         val cryptocurrencies = TestUtil.cryptocurrenciesPercentChangeOrder
         cryptoDao.insert(cryptocurrencies)
 
-        fun getQuery(sort: String): SimpleSQLiteQuery {
-            return SimpleSQLiteQuery("Select * from crypto_table order by ? ASC", arrayOf(sort))
-        }
-
         val getCryptocurrencyList =
-            cryptoDao.getCryptocurrencies(getQuery(cryptoPercentChange24))
+            cryptoDao.getCryptocurrencies(getCryptocurrenciesBy(cryptoPercentChange24))
 
         assertEquals(cryptocurrencies[0].name, getCryptocurrencyList.blockingFirst()[0].name)
         assertEquals(cryptocurrencies[1].name, getCryptocurrencyList.blockingFirst()[1].name)
