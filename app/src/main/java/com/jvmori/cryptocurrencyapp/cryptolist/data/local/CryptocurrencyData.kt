@@ -5,6 +5,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 const val cryptoName = "crypto_name"
+const val cryptoVolume = "volume"
+const val cryptoPercentChange24 = "percent_change_24h"
 
 @Entity(tableName = "crypto_table")
 data class CryptocurrencyData(
@@ -15,12 +17,12 @@ data class CryptocurrencyData(
     var name: String = "",
     @ColumnInfo(name = "percent_change_1h")
     var percentChange1h: Double = 0.00,
-    @ColumnInfo(name = "percent_change_24h")
+    @ColumnInfo(name = cryptoPercentChange24)
     var percentChange24h: Double = 0.00,
     @ColumnInfo(name = "price_usd")
     var priceUsd: Double = 0.00,
     @ColumnInfo(name = "symbol")
     var symbol: String = "",
-    @ColumnInfo(name = "volume")
+    @ColumnInfo(name = cryptoVolume)
     var volume: Double = 0.0
 )

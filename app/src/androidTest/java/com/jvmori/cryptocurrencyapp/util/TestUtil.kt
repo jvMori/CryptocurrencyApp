@@ -8,7 +8,7 @@ class TestUtil {
             "90",
             "Bitcoin",
             0.50,
-            1.12,
+            -0.12,
             10238.90,
             "BTC",
             37345838108.48439
@@ -17,11 +17,13 @@ class TestUtil {
             "80",
             "Ethereum",
             0.40,
-            1.12,
+            4.28,
             10238.90,
             "ETH",
-            37345838108.48439
+            21646561084.177418
         )
-        val cryptocurrencies = arrayListOf<CryptocurrencyData>(crypto1, crypto2)
+        val cryptocurrenciesDefaultOrder = arrayListOf<CryptocurrencyData>(crypto1, crypto2)
+        val cryptocurrenciesVolumeOrder = arrayListOf<CryptocurrencyData>(crypto2, crypto1)
+        val cryptocurrenciesPercentChangeOrder = arrayListOf<CryptocurrencyData>(crypto1, crypto2)
     }
 }
