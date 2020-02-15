@@ -4,10 +4,10 @@ import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEnt
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.repositories.CryptocurrencyRepository
 import io.reactivex.Observable
 
-class GetCryptoCurrencyListImpl(
+class GetCryptoCurrencyListUseCaseImpl(
     private val repository: CryptocurrencyRepository
-) : GetCryptocurrencyList {
-    override fun getCryptocurrencies(): Observable<List<CryptocurrencyEntity>> {
-        return repository.getCryptocurrencies()
+) : GetCryptocurrencyListUseCase {
+    override fun getCryptocurrencies(sort : String): Observable<List<CryptocurrencyEntity>> {
+        return repository.getCryptocurrencies(sort)
     }
 }
