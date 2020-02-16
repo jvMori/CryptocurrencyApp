@@ -4,7 +4,8 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.jvmori.cryptocurrencyapp.cryptolist.data.remote.CryptoResponse
 
 fun getCryptocurrenciesBy(sort: String): SimpleSQLiteQuery {
-    return SimpleSQLiteQuery("Select * from crypto_table order by ? ASC", arrayOf(sort))
+    val query = "SELECT * FROM crypto_table ORDER BY " + sort +" ASC"
+    return SimpleSQLiteQuery(query)
 }
 
 fun mapResponseToLocal(response: CryptoResponse) : List<CryptocurrencyData>{
