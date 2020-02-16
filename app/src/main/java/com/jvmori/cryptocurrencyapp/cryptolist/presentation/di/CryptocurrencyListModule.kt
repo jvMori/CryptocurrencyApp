@@ -1,9 +1,6 @@
 package com.jvmori.cryptocurrencyapp.cryptolist.presentation.di
 
-import androidx.work.Constraints
-import androidx.work.NetworkType
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.CryptoDatabase
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.LocalDataSource
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.LocalDataSourceImpl
@@ -36,6 +33,6 @@ private val constraints = Constraints.Builder()
     .setRequiredNetworkType(NetworkType.CONNECTED)
     .build()
 
-private val work = PeriodicWorkRequestBuilder<CryptoWorker>(30, TimeUnit.SECONDS)
+private val work = OneTimeWorkRequestBuilder<CryptoWorker>()
     .setConstraints(constraints)
     .build()

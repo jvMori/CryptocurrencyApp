@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit
 class CryptocurrencyRepositoryImpl(
     private val localDataSource: LocalDataSource,
     private val workManager: WorkManager,
-    private val workRequest: PeriodicWorkRequest
+    private val workRequest: OneTimeWorkRequest
 ) : CryptocurrencyRepository {
 
     override fun getCryptocurrencies(sort: String): Observable<List<CryptocurrencyEntity>> {

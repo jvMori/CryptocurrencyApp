@@ -10,6 +10,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import org.koin.core.KoinComponent
 import org.koin.core.inject
+import java.util.concurrent.TimeUnit
 
 class CryptoWorker(
     context: Context,
@@ -20,7 +21,7 @@ class CryptoWorker(
     private val remoteDataSource: RemoteDataSource by inject()
 
     override fun createWork(): Single<Result> {
-        return Observable.range(0, 1)
+        return Observable.interval(0, 30, TimeUnit.SECONDS)
             .flatMap {
                 remoteDataSource.getCryptocurrencies()
             }.doOnError {
