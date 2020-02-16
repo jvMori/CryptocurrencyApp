@@ -64,8 +64,7 @@ class CryptocurrencyListFragment : Fragment() {
         val cryptoAdapter = CryptocurrencyAdapter(cryptocurrencies ?: arrayListOf())
         binding.mainLayout.recyclerView.apply {
             adapter = cryptoAdapter
-            layoutManager =
-                LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.VERTICAL, false)
+            layoutManager = LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
         }
     }
