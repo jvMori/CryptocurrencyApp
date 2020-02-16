@@ -10,6 +10,8 @@ class CryptocurrencyViewHolder(
 
     fun bind(cryptoItem : CryptocurrencyEntity){
         binding.cryptoItem = cryptoItem
+        binding.isMinusHour = cryptoItem.percentChangeHour < 0
+        binding.isMinus24H = cryptoItem.percentChange24Hours < 0
         binding.executePendingBindings()
     }
 }
