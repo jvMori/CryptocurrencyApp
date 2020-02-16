@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.jvmori.cryptocurrencyapp.R
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.cryptoName
+import com.jvmori.cryptocurrencyapp.cryptolist.data.remote.RemoteDataSource
 import com.jvmori.cryptocurrencyapp.cryptolist.data.util.Resource
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity
 import com.jvmori.cryptocurrencyapp.cryptolist.presentation.viemodels.CryptocurrencyListViewModel
 import com.jvmori.cryptocurrencyapp.databinding.FragmentCryptocurrencyListBinding
 import kotlinx.android.synthetic.main.cryptolist_main.view.*
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CryptocurrencyListFragment : Fragment() {
 
@@ -36,6 +38,7 @@ class CryptocurrencyListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         cryptoViewModel.apply {
+            refreshCryptocurrencies()
             fetchCryptocurrencies(cryptoName)
             cryptocurrencies.observe(this@CryptocurrencyListFragment, Observer {
                 when (it.status) {
@@ -61,7 +64,8 @@ class CryptocurrencyListFragment : Fragment() {
         val cryptoAdapter = CryptocurrencyAdapter(cryptocurrencies ?: arrayListOf())
         binding.mainLayout.recyclerView.apply {
             adapter = cryptoAdapter
-            layoutManager = LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.HORIZONTAL, false)
+            layoutManager =
+                LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
         }
     }

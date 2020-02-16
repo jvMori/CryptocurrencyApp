@@ -1,38 +1,34 @@
 package com.jvmori.cryptocurrencyapp.cryptolist.data.remote
 
 import android.content.Context
-import androidx.work.Worker
+import androidx.work.RxWorker
 import androidx.work.WorkerParameters
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.LocalDataSource
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.mapResponseToLocal
-import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.Observable
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
-import java.lang.Exception
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class CryptoWorker(
     context: Context,
-    parameters: WorkerParameters,
-    private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource,
-    private val disposable: CompositeDisposable
-) : Worker(context, parameters) {
+    parameters: WorkerParameters
+) : RxWorker(context, parameters), KoinComponent {
 
-    override fun doWork(): Result {
-        return try {
-            disposable.add(
+    private val localDataSource: LocalDataSource by inject()
+    private val remoteDataSource: RemoteDataSource by inject()
+
+    override fun createWork(): Single<Result> {
+        return Observable.range(0, 1)
+            .flatMap {
                 remoteDataSource.getCryptocurrencies()
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribeOn(Schedulers.io())
-                    .doOnNext {
-                        localDataSource.updateCryptocurrencies(mapResponseToLocal(it))
-                    }
-                    .doOnError { Result.retry() }
-                    .subscribe()
-            )
-            Result.success()
-        } catch (throwable: Throwable) {
-            Result.failure()
-        }
+            }.doOnError {
+                Result.retry()
+            }.map {
+                localDataSource.updateCryptocurrencies(mapResponseToLocal(it))
+            }.toList().map {
+                Result.success()
+            }
     }
 }

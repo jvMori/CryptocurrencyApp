@@ -6,12 +6,14 @@ import androidx.lifecycle.ViewModel
 import com.jvmori.cryptocurrencyapp.cryptolist.data.util.Resource
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.usecases.GetCryptocurrenciesUseCase
+import com.jvmori.cryptocurrencyapp.cryptolist.domain.usecases.RefreshCryptocurrenciesUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class CryptocurrencyListViewModel(
-    private val cryptocurrencyListUseCase : GetCryptocurrenciesUseCase
+    private val cryptocurrencyListUseCase : GetCryptocurrenciesUseCase,
+    private val refreshCryptocurrenciesUseCase: RefreshCryptocurrenciesUseCase
 ) : ViewModel() {
 
     private val disposable = CompositeDisposable()
@@ -31,6 +33,10 @@ class CryptocurrencyListViewModel(
                     _cryptocurrencies.value = Resource.error(error.localizedMessage ?: "", null)
                 })
         )
+    }
+
+    fun refreshCryptocurrencies(){
+        refreshCryptocurrenciesUseCase.refreshPeriodically()
     }
 
     override fun onCleared() {

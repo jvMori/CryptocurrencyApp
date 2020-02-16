@@ -5,6 +5,7 @@ import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import org.koin.dsl.module
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 val networkModule = module {
@@ -23,10 +24,11 @@ fun provideRetrofit(client: OkHttpClient): Retrofit {
         .baseUrl("https://api.coinlore.com/api/")
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
+        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .build()
 }
 
-fun provideOkHttpClient (interceptor: Interceptor): OkHttpClient {
+fun provideOkHttpClient(interceptor: Interceptor): OkHttpClient {
     return OkHttpClient.Builder()
         .addInterceptor(interceptor)
         .retryOnConnectionFailure(true)
