@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/defaultName"
           android:icon="@drawable/sort_name"
-          android:title="@string/name"
+          android:title="@string/NameValue"
           app:showAsAction="never"
     >
     </item>
