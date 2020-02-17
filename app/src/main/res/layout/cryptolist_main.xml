@@ -8,18 +8,19 @@
 
     <TextView
             android:text="@string/NameValue"
-            android:layout_width="100dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content" android:id="@+id/name" app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" android:textSize="14sp"
             android:textAlignment="center" android:padding="2dp" android:textStyle="bold"
-    />
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/price"/>
     <TextView
             android:text="@string/price"
             android:layout_width="60dp"
             android:layout_height="wrap_content" android:id="@+id/price"
             app:layout_constraintTop_toTopOf="@+id/name" app:layout_constraintBottom_toBottomOf="@+id/name"
             app:layout_constraintStart_toEndOf="@+id/name" android:layout_marginStart="8dp" android:textSize="14sp"
-            android:textAlignment="center" android:padding="2dp" android:textStyle="bold"/>
+            android:textAlignment="center" android:padding="2dp" android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/change1h"/>
     <TextView
             android:text="@string/change_1h"
             android:layout_width="50dp"
@@ -27,14 +28,16 @@
             app:layout_constraintBottom_toBottomOf="@+id/price"
             app:layout_constraintTop_toTopOf="@+id/price" app:layout_constraintStart_toEndOf="@+id/price"
             android:layout_marginStart="8dp" android:textSize="14sp" android:textAlignment="center"
-            android:padding="2dp" android:textStyle="bold"/>
+            android:padding="2dp" android:textStyle="bold" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toStartOf="@+id/change24"/>
     <TextView
             android:text="@string/change_24h"
             android:layout_width="80dp"
             android:layout_height="wrap_content" android:id="@+id/change24"
             app:layout_constraintTop_toTopOf="@+id/change1h" app:layout_constraintBottom_toBottomOf="@+id/change1h"
             app:layout_constraintStart_toEndOf="@+id/change1h" android:layout_marginStart="8dp"
-            android:textSize="14sp" android:textAlignment="center" android:padding="2dp" android:textStyle="bold"/>
+            android:textSize="14sp" android:textAlignment="center" android:padding="2dp" android:textStyle="bold"
+            app:layout_constraintHorizontal_bias="0.5" app:layout_constraintEnd_toStartOf="@+id/volume"/>
     <TextView
             android:text="@string/volume"
             android:layout_width="80dp"
@@ -42,7 +45,8 @@
             app:layout_constraintTop_toTopOf="@+id/change24" app:layout_constraintBottom_toBottomOf="@+id/change24"
             android:textSize="14sp" app:layout_constraintStart_toEndOf="@+id/change24"
             android:layout_marginStart="8dp" android:textAlignment="center" android:padding="2dp"
-            android:textStyle="bold"/>
+            android:textStyle="bold" app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintEnd_toEndOf="parent"/>
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
