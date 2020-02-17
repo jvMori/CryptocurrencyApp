@@ -50,15 +50,15 @@ class CryptocurrencyListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.defaultName -> {
-                cryptoViewModel.fetchCryptocurrenciesLocally(cryptoName)
+                cryptoViewModel.fetchLocalCryptocurrencies(cryptoName)
                 true
             }
             R.id.volume -> {
-                cryptoViewModel.fetchCryptocurrenciesLocally(cryptoVolume)
+                cryptoViewModel.fetchLocalCryptocurrencies(cryptoVolume)
                 true
             }
             R.id.percentChange24h -> {
-                cryptoViewModel.fetchCryptocurrenciesLocally(cryptoPercentChange24)
+                cryptoViewModel.fetchLocalCryptocurrencies(cryptoPercentChange24)
                 true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -70,7 +70,7 @@ class CryptocurrencyListFragment : Fragment() {
         createCryptocurrenciesAdapter()
         cryptoViewModel.apply {
             refreshCryptocurrencies()
-            fetchCryptocurrenciesLocally(cryptoName)
+            fetchLocalCryptocurrencies(cryptoName)
         }
         observeCryptocurrencies()
         observeNetworkStatus()
