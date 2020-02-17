@@ -1,6 +1,8 @@
 package com.jvmori.cryptocurrencyapp.cryptolist.data.repositories
 
 import android.accounts.NetworkErrorException
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.CryptocurrencyData
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.LocalDataSource
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.mapResponseToLocal
@@ -10,7 +12,12 @@ import com.jvmori.cryptocurrencyapp.cryptolist.data.util.roundTo
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.repositories.CryptocurrencyRepository
 import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import java.lang.Exception
+import java.net.UnknownHostException
 import java.util.concurrent.TimeUnit
 
 class CryptocurrencyRepositoryImpl(
@@ -19,9 +26,10 @@ class CryptocurrencyRepositoryImpl(
     private val disposable: CompositeDisposable
 ) : CryptocurrencyRepository {
 
-    private var networkStatus: Resource.Status = Resource.Status.LOADING
+    private var networkStatusObservable: PublishSubject<Resource.Status> =
+        PublishSubject.create()
 
-    override fun getNetworkStatus(): Resource.Status = networkStatus
+    override fun getNetworkStatus(): PublishSubject<Resource.Status> = networkStatusObservable
 
     override fun getCryptocurrencies(sort: String): Observable<List<CryptocurrencyEntity>> {
         return localDataSource.getCryptocurrencies(sort).map {
@@ -34,21 +42,29 @@ class CryptocurrencyRepositoryImpl(
             Observable.interval(0, 30, TimeUnit.SECONDS)
                 .flatMap {
                     remoteDataSource.getCryptocurrencies()
-                }.doOnError {
-                    handleError(it)
                 }.map {
                     localDataSource.updateCryptocurrencies(mapResponseToLocal(it))
-                }.doOnComplete {
-                    networkStatus = Resource.Status.SUCCESS
-                }.subscribe()
+                }.subscribe({
+                    networkStatusObservable.onNext(Resource.Status.SUCCESS)
+                }, {
+                    handleError(it)
+                })
         )
     }
 
     private fun handleError(it: Throwable?) {
-        networkStatus = if (it is NetworkErrorException) {
-            Resource.Status.NETWORK_ERROR
-        } else {
-            Resource.Status.ERROR
+        try {
+            if (it is UnknownHostException || it is NetworkErrorException) {
+                networkStatusObservable.onNext(Resource.Status.NETWORK_ERROR)
+            } else {
+                networkStatusObservable.onNext(Resource.Status.ERROR)
+            }
+        } catch (e: UnknownHostException) {
+
+        } catch (e: NetworkErrorException) {
+
+        } catch (e: Exception) {
+
         }
     }
 

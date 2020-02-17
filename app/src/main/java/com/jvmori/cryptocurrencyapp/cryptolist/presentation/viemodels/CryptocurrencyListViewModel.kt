@@ -41,7 +41,15 @@ class CryptocurrencyListViewModel(
         refreshCryptocurrenciesUseCase.refreshPeriodically()
     }
 
-    fun getNetworkStatus(): Resource.Status = repository.getNetworkStatus()
+    fun getNetworkStatus(): LiveData<Resource.Status> {
+        val status = MutableLiveData<Resource.Status>()
+        disposable.add(
+            repository.getNetworkStatus().subscribe {
+                status.postValue(it)
+            }
+        )
+        return status
+    }
 
     fun clearPeriodicRefresh(){
         disposable.clear()
