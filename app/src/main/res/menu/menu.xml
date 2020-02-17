@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/defaultName"
+          android:icon="@drawable/sort_name"
+          android:title="@string/name"
+          app:showAsAction="never"
+    >
+    </item>
+    <item android:id="@+id/volume"
+          android:icon="@drawable/sort_volume"
+          android:title="@string/volume"
+          app:showAsAction="never"
+    />
+    <item android:id="@+id/percentChange24h"
+          android:icon="@drawable/sort_change"
+          android:title="@string/percent_change"
+          app:showAsAction="never"
+    />
+</menu>

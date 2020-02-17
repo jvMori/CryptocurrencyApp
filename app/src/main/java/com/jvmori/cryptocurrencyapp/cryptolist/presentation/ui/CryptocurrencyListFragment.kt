@@ -2,10 +2,9 @@ package com.jvmori.cryptocurrencyapp.cryptolist.presentation.ui
 
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
+import androidx.appcompat.view.menu.MenuBuilder
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -14,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.jvmori.cryptocurrencyapp.R
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.cryptoName
+import com.jvmori.cryptocurrencyapp.cryptolist.data.local.cryptoPercentChange24
+import com.jvmori.cryptocurrencyapp.cryptolist.data.local.cryptoVolume
 import com.jvmori.cryptocurrencyapp.cryptolist.data.util.Resource
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity
 import com.jvmori.cryptocurrencyapp.cryptolist.presentation.viemodels.CryptocurrencyListViewModel
@@ -33,6 +34,35 @@ class CryptocurrencyListFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cryptocurrency_list, container, false)
         return binding.root
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+        (menu as MenuBuilder).setOptionalIconsVisible(true)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.defaultName -> {
+                cryptoViewModel.fetchCryptocurrencies(cryptoName)
+                true
+            }
+            R.id.volume -> {
+                cryptoViewModel.fetchCryptocurrencies(cryptoVolume)
+                true
+            }
+            R.id.percentChange24h -> {
+               cryptoViewModel.fetchCryptocurrencies(cryptoPercentChange24)
+                true
+            }
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     override fun onStart() {
@@ -64,8 +94,9 @@ class CryptocurrencyListFragment : Fragment() {
             }
         })
     }
+
     private fun showNetworkErrorInfo() {
-        Snackbar.make(this.requireView(),getString(R.string.network_error_message), Snackbar.LENGTH_LONG).show()
+        Snackbar.make(this.requireView(), getString(R.string.network_error_message), Snackbar.LENGTH_LONG).show()
     }
 
     private fun showErrorView() {
@@ -82,7 +113,8 @@ class CryptocurrencyListFragment : Fragment() {
         val cryptoAdapter = CryptocurrencyAdapter(cryptocurrencies ?: arrayListOf())
         binding.mainLayout.recyclerView.apply {
             adapter = cryptoAdapter
-            layoutManager = LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
         }
     }
