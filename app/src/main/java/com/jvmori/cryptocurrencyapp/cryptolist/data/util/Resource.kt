@@ -12,6 +12,7 @@ class Resource<T>(
     sealed class Status{
         object SUCCESS : Status()
         object ERROR : Status()
+        object NETWORK_ERROR : Status()
         object LOADING : Status()
     }
 

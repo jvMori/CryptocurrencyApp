@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.jvmori.cryptocurrencyapp.cryptolist.data.util.Resource
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity
+import com.jvmori.cryptocurrencyapp.cryptolist.domain.repositories.CryptocurrencyRepository
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.usecases.GetCryptocurrenciesUseCase
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.usecases.RefreshCryptocurrenciesUseCase
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,11 +13,12 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class CryptocurrencyListViewModel(
-    private val cryptocurrencyListUseCase : GetCryptocurrenciesUseCase,
-    private val refreshCryptocurrenciesUseCase: RefreshCryptocurrenciesUseCase
+    private val repository: CryptocurrencyRepository,
+    private val cryptocurrencyListUseCase: GetCryptocurrenciesUseCase,
+    private val refreshCryptocurrenciesUseCase: RefreshCryptocurrenciesUseCase,
+    private val disposable: CompositeDisposable
 ) : ViewModel() {
 
-    private val disposable = CompositeDisposable()
     private val _cryptocurrencies = MutableLiveData<Resource<List<CryptocurrencyEntity>>>()
     val cryptocurrencies: LiveData<Resource<List<CryptocurrencyEntity>>>
         get() = _cryptocurrencies
@@ -35,12 +37,18 @@ class CryptocurrencyListViewModel(
         )
     }
 
-    fun refreshCryptocurrencies(){
+    fun refreshCryptocurrencies() {
         refreshCryptocurrenciesUseCase.refreshPeriodically()
+    }
+
+    fun getNetworkStatus(): Resource.Status = repository.getNetworkStatus()
+
+    fun clearPeriodicRefresh(){
+        disposable.clear()
     }
 
     override fun onCleared() {
         super.onCleared()
-        disposable.clear()
+        disposable.dispose()
     }
 }

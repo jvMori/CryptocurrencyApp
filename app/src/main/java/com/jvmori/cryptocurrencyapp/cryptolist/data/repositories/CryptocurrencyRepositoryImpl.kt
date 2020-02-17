@@ -1,22 +1,27 @@
 package com.jvmori.cryptocurrencyapp.cryptolist.data.repositories
 
-import androidx.work.*
+import android.accounts.NetworkErrorException
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.CryptocurrencyData
 import com.jvmori.cryptocurrencyapp.cryptolist.data.local.LocalDataSource
-import com.jvmori.cryptocurrencyapp.cryptolist.data.remote.CryptoWorker
+import com.jvmori.cryptocurrencyapp.cryptolist.data.local.mapResponseToLocal
+import com.jvmori.cryptocurrencyapp.cryptolist.data.remote.RemoteDataSource
+import com.jvmori.cryptocurrencyapp.cryptolist.data.util.Resource
 import com.jvmori.cryptocurrencyapp.cryptolist.data.util.roundTo
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.repositories.CryptocurrencyRepository
 import io.reactivex.Observable
-import java.math.RoundingMode
-import java.text.DecimalFormat
+import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.TimeUnit
 
 class CryptocurrencyRepositoryImpl(
     private val localDataSource: LocalDataSource,
-    private val workManager: WorkManager,
-    private val workRequest: OneTimeWorkRequest
+    private val remoteDataSource: RemoteDataSource,
+    private val disposable: CompositeDisposable
 ) : CryptocurrencyRepository {
+
+    private var networkStatus: Resource.Status = Resource.Status.LOADING
+
+    override fun getNetworkStatus(): Resource.Status = networkStatus
 
     override fun getCryptocurrencies(sort: String): Observable<List<CryptocurrencyEntity>> {
         return localDataSource.getCryptocurrencies(sort).map {
@@ -25,7 +30,26 @@ class CryptocurrencyRepositoryImpl(
     }
 
     override fun refreshPeriodically() {
-        workManager.enqueue(workRequest)
+        disposable.add(
+            Observable.interval(0, 30, TimeUnit.SECONDS)
+                .flatMap {
+                    remoteDataSource.getCryptocurrencies()
+                }.doOnError {
+                    handleError(it)
+                }.map {
+                    localDataSource.updateCryptocurrencies(mapResponseToLocal(it))
+                }.doOnComplete {
+                    networkStatus = Resource.Status.SUCCESS
+                }.subscribe()
+        )
+    }
+
+    private fun handleError(it: Throwable?) {
+        networkStatus = if (it is NetworkErrorException) {
+            Resource.Status.NETWORK_ERROR
+        } else {
+            Resource.Status.ERROR
+        }
     }
 
     private fun mapper(cryptocurrencyData: List<CryptocurrencyData>): List<CryptocurrencyEntity> {
