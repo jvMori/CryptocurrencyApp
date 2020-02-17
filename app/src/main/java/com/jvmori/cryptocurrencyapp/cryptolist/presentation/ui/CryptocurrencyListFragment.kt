@@ -3,7 +3,6 @@ package com.jvmori.cryptocurrencyapp.cryptolist.presentation.ui
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.view.menu.MenuBuilder
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -50,15 +49,15 @@ class CryptocurrencyListFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.defaultName -> {
-                cryptoViewModel.fetchCryptocurrencies(cryptoName)
+                cryptoViewModel.fetchCryptocurrenciesLocally(cryptoName)
                 true
             }
             R.id.volume -> {
-                cryptoViewModel.fetchCryptocurrencies(cryptoVolume)
+                cryptoViewModel.fetchCryptocurrenciesLocally(cryptoVolume)
                 true
             }
             R.id.percentChange24h -> {
-               cryptoViewModel.fetchCryptocurrencies(cryptoPercentChange24)
+               cryptoViewModel.fetchCryptocurrenciesLocally(cryptoPercentChange24)
                 true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -69,7 +68,7 @@ class CryptocurrencyListFragment : Fragment() {
         super.onStart()
         cryptoViewModel.apply {
             refreshCryptocurrencies()
-            fetchCryptocurrencies(cryptoName)
+            fetchCryptocurrenciesLocally(cryptoName)
         }
         observeCryptocurrencies()
         observeNetworkStatus()
@@ -95,6 +94,17 @@ class CryptocurrencyListFragment : Fragment() {
         })
     }
 
+    private fun showList(cryptocurrencies: List<CryptocurrencyEntity>?) {
+        binding.loading.visibility = View.GONE
+        val cryptoAdapter = CryptocurrencyAdapter(cryptocurrencies ?: arrayListOf())
+        binding.mainLayout.recyclerView.apply {
+            adapter = cryptoAdapter
+            layoutManager =
+                LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.VERTICAL, false)
+            setHasFixedSize(true)
+        }
+    }
+
     private fun showNetworkErrorInfo() {
         Snackbar.make(this.requireView(), getString(R.string.network_error_message), Snackbar.LENGTH_LONG).show()
     }
@@ -106,17 +116,6 @@ class CryptocurrencyListFragment : Fragment() {
 
     private fun showLoading() {
         binding.loading.visibility = View.VISIBLE
-    }
-
-    private fun showList(cryptocurrencies: List<CryptocurrencyEntity>?) {
-        binding.loading.visibility = View.GONE
-        val cryptoAdapter = CryptocurrencyAdapter(cryptocurrencies ?: arrayListOf())
-        binding.mainLayout.recyclerView.apply {
-            adapter = cryptoAdapter
-            layoutManager =
-                LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.VERTICAL, false)
-            setHasFixedSize(true)
-        }
     }
 
     override fun onStop() {

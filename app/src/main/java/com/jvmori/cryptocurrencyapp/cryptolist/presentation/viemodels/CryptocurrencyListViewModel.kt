@@ -23,7 +23,7 @@ class CryptocurrencyListViewModel(
     val cryptocurrencies: LiveData<Resource<List<CryptocurrencyEntity>>>
         get() = _cryptocurrencies
 
-    fun fetchCryptocurrencies(sort: String) {
+    fun fetchCryptocurrenciesLocally(sort: String) {
         _cryptocurrencies.value = Resource.loading(null)
         disposable.add(
             cryptocurrencyListUseCase.getCryptocurrencies(sort)
