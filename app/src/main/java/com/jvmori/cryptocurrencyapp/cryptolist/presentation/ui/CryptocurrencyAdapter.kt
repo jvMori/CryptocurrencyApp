@@ -7,8 +7,13 @@ import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEnt
 import com.jvmori.cryptocurrencyapp.databinding.CryptocurrencyItemBinding
 
 class CryptocurrencyAdapter(
-    private val cryptocurrencies: List<CryptocurrencyEntity>
+    private var cryptocurrencies: List<CryptocurrencyEntity>
 ) : RecyclerView.Adapter<CryptocurrencyViewHolder>() {
+
+    fun updateList(list : List<CryptocurrencyEntity>){
+        cryptocurrencies = list
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CryptocurrencyViewHolder {
         val inflater = LayoutInflater.from(parent.context)

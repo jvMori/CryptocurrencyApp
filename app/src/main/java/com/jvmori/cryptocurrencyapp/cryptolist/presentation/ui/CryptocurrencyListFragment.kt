@@ -26,6 +26,7 @@ class CryptocurrencyListFragment : Fragment() {
 
     private val cryptoViewModel: CryptocurrencyListViewModel by viewModel()
     private lateinit var binding: FragmentCryptocurrencyListBinding
+    private lateinit var cryptoAdapter: CryptocurrencyAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -57,7 +58,7 @@ class CryptocurrencyListFragment : Fragment() {
                 true
             }
             R.id.percentChange24h -> {
-               cryptoViewModel.fetchCryptocurrenciesLocally(cryptoPercentChange24)
+                cryptoViewModel.fetchCryptocurrenciesLocally(cryptoPercentChange24)
                 true
             }
             else -> return super.onOptionsItemSelected(item)
@@ -66,6 +67,7 @@ class CryptocurrencyListFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        createCryptocurrenciesAdapter()
         cryptoViewModel.apply {
             refreshCryptocurrencies()
             fetchCryptocurrenciesLocally(cryptoName)
@@ -88,21 +90,25 @@ class CryptocurrencyListFragment : Fragment() {
         cryptoViewModel.cryptocurrencies.observe(this@CryptocurrencyListFragment, Observer {
             when (it.status) {
                 Resource.Status.LOADING -> showLoading()
-                Resource.Status.SUCCESS -> showList(it.data)
+                Resource.Status.SUCCESS -> updateCryptocurrencies(it.data)
                 Resource.Status.ERROR -> showErrorView()
             }
         })
     }
 
-    private fun showList(cryptocurrencies: List<CryptocurrencyEntity>?) {
+    private fun createCryptocurrenciesAdapter() {
         binding.loading.visibility = View.GONE
-        val cryptoAdapter = CryptocurrencyAdapter(cryptocurrencies ?: arrayListOf())
+        cryptoAdapter = CryptocurrencyAdapter(arrayListOf())
         binding.mainLayout.recyclerView.apply {
             adapter = cryptoAdapter
             layoutManager =
                 LinearLayoutManager(this@CryptocurrencyListFragment.requireContext(), RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
         }
+    }
+
+    private fun updateCryptocurrencies(list: List<CryptocurrencyEntity>?) {
+        cryptoAdapter.updateList(list ?: arrayListOf())
     }
 
     private fun showNetworkErrorInfo() {
