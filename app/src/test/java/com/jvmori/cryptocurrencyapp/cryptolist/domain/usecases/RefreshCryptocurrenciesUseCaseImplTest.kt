@@ -2,18 +2,21 @@ package com.jvmori.cryptocurrencyapp.cryptolist.domain.usecases
 
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.entities.CryptocurrencyEntity
 import com.jvmori.cryptocurrencyapp.cryptolist.domain.repositories.CryptocurrencyRepository
+import io.reactivex.Observable
+import io.reactivex.observers.TestObserver
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.TestScheduler
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import java.util.concurrent.TimeUnit
 
 class RefreshCryptocurrenciesUseCaseImplTest {
 
     private val repository = mock(CryptocurrencyRepository::class.java)
-    private val cryptoListUseCases by lazy { RefreshCryptocurrenciesUseCaseImpl(repository) }
+    private val cryptoListUseCases = RefreshCryptocurrenciesUseCaseImpl(repository)
 
     @Before
     fun setUp() = RxJavaPlugins.reset()
@@ -24,15 +27,17 @@ class RefreshCryptocurrenciesUseCaseImplTest {
     @Test
     fun testMyObservable() {
         val testScheduler = TestScheduler()
+        val testObserver = TestObserver<List<CryptocurrencyEntity>>()
         RxJavaPlugins.setComputationSchedulerHandler { testScheduler }
         val result = arrayListOf(mock(CryptocurrencyEntity::class.java))
 
-        val testObservable = cryptoListUseCases.refreshPeriodically().test()
-        cryptoListUseCases.refreshPeriodically().subscribe()
+        Mockito.`when`(cryptoListUseCases.refreshPeriodically())
+            .thenReturn(Observable.just(result))
 
-        testScheduler.advanceTimeBy(0, TimeUnit.SECONDS)
-        testObservable.assertEmpty()
+        cryptoListUseCases.refreshPeriodically().subscribeWith(testObserver)
+
         testScheduler.advanceTimeBy(30, TimeUnit.SECONDS)
-        testObservable.assertValue(result)
+        testObserver.assertValueCount(1)
+        testObserver.assertValue(result)
     }
 }
