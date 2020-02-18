@@ -77,11 +77,12 @@ class CryptocurrencyListFragment : Fragment() {
     }
 
     private fun observeNetworkStatus() {
-        cryptoViewModel.getNetworkStatus().observe(this@CryptocurrencyListFragment, Observer {
+        cryptoViewModel.networkStatus.observe(this@CryptocurrencyListFragment, Observer {
             when (it) {
                 Resource.Status.LOADING -> showLoading()
                 Resource.Status.NETWORK_ERROR -> showNetworkErrorInfo()
                 Resource.Status.ERROR -> showErrorView()
+                Resource.Status.SUCCESS -> hideLoading()
             }
         })
     }
@@ -116,12 +117,16 @@ class CryptocurrencyListFragment : Fragment() {
     }
 
     private fun showErrorView() {
-        binding.loading.visibility = View.GONE
+        hideLoading()
         binding.error.visibility = View.VISIBLE
     }
 
     private fun showLoading() {
         binding.loading.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading() {
+        binding.loading.visibility = View.GONE
     }
 
     override fun onStop() {

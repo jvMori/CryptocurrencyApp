@@ -19,10 +19,10 @@ import org.koin.dsl.module
 val cryptocurrencyListModule = module {
     single<RemoteDataSource> { RemoteDataSourceImpl(get()) }
     single<LocalDataSource> { LocalDataSourceImpl((get() as CryptoDatabase).cryptoDao()) }
-    single<CryptocurrencyRepository> { CryptocurrencyRepositoryImpl(get(), get(), get()) }
+    single<CryptocurrencyRepository> { CryptocurrencyRepositoryImpl(get(), get()) }
     single<GetCryptocurrenciesUseCase> { GetCryptoCurrenciesUseCaseImpl(get()) }
     single<RefreshCryptocurrenciesUseCase> { RefreshCryptocurrenciesUseCaseImpl(get()) }
     single { CompositeDisposable() }
-    viewModel { CryptocurrencyListViewModel(get(), get(), get(), get()) }
+    viewModel { CryptocurrencyListViewModel(get(), get(), get()) }
 }
 
