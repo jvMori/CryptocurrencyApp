@@ -22,8 +22,8 @@ class TestUtil {
             "ETH",
             21646561084.177418
         )
-        val cryptocurrenciesDefaultOrder = arrayListOf<CryptocurrencyData>(crypto1, crypto2)
-        val cryptocurrenciesVolumeOrder = arrayListOf<CryptocurrencyData>(crypto2, crypto1)
-        val cryptocurrenciesPercentChangeOrder = arrayListOf<CryptocurrencyData>(crypto1, crypto2)
+        val cryptocurrenciesDefaultOrder = arrayListOf(crypto1, crypto2)
+        val cryptocurrenciesVolumeOrder = arrayListOf(crypto2, crypto1)
+        val cryptocurrenciesPercentChangeOrder = arrayListOf(crypto1, crypto2)
     }
 }

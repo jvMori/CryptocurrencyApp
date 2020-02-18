@@ -3,9 +3,7 @@ package com.jvmori.cryptocurrencyapp.cryptolist.data.local
 import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.room.Room
-import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.jvmori.cryptocurrencyapp.util.TestUtil
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
@@ -13,7 +11,6 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 import java.io.IOException
 
 class CryptoDaoTest {
