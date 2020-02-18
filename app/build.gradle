@@ -60,6 +60,7 @@ dependencies {
     // -------- MOCKITO
     def mockito_version = "2.19.0"
     testImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
 
     // Koin for Kotlin apps
     def koin_version = "2.0.1"
